@@ -3,11 +3,14 @@ import {
   View,
   Text,
   StyleSheet,
+  Image,
+  ScrollView,
   FlatList,
 } from 'react-native';
-import { Button, Card, Icon } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import axios from 'axios';
 import moment from 'moment'; // Importe a biblioteca moment.js
+import 'moment/locale/pt-br'; // Importe o locale pt-br para o moment
 
 const API_KEY = '08085d25'; // Substitua pela sua chave API
 
@@ -29,10 +32,18 @@ const App = () => {
     }
   };
 
-  const formatDate = (dateString) => {
-    // Use moment.js para formatar a data
-    const date = moment(dateString, 'YYYY-MM-DD'); // Crie um objeto moment a partir da string
-    return date.format('LLLL'); // Formate a data como você quiser
+  // Função para obter a data e hora atuais em português
+  const getCurrentDateTime = () => {
+    const now = new Date();
+    moment.locale('pt-br'); // Define o locale como pt-br
+    return moment(now).format('LLLL').charAt(0).toUpperCase() + moment(now).format('LLLL').slice(1); // Formate a data como você quiser e converta para maiúsculas
+  };
+
+  // Função para corrigir a hora da API
+  const fixHour = (hour) => {
+    const [hours, minutes, seconds] = hour.split(':').map(Number);
+    const correctedHours = (hours - 3 + 24) % 24; // Subtrai 3 horas e ajusta para o intervalo de 0 a 23
+    return `${correctedHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
   if (!weatherData) {
@@ -44,75 +55,121 @@ const App = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>
-          {formatDate(weatherData.date)}
-        </Text>
-        <Text style={styles.headerText}>
-          {weatherData.temp}°C - {weatherData.description}
-        </Text>
-      </View>
-      <View style={styles.body}>
-        <View style={styles.infoItem}>
-          <Text style={styles.infoText}>
-            <Icon name="wind" type="font-awesome-5" />{' '}
-            {weatherData.wind_speedy} km/h
+    <ScrollView contentContainerStyle={styles.contentContainer}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerText}>
+            {getCurrentDateTime()} {/* Use getCurrentDateTime() para exibir a data e hora atuais */}
+          </Text>
+          <Text style={styles.headerText}>
+            {weatherData.city_name}
           </Text>
         </View>
-        <View style={styles.infoItem}>
-          <Text style={styles.infoText}>
-            <Icon name="cloud-rain" type="font-awesome-5" />{' '}
-            {weatherData.humidity}% umidade
-          </Text>
+        <View style={styles.body}>
+          <View style={styles.tempContainer}>
+            <Text style={styles.tempText}>{weatherData.temp}°C</Text>
+            <Text style={styles.descriptionText}>{weatherData.description}</Text>
+          </View>
         </View>
-        <View style={styles.infoItem}>
-          <Text style={styles.infoText}>
-            <Icon name="cloud-showers-heavy" type="font-awesome-5" />{' '}
-            {weatherData.rain}% de chuva
-          </Text>
+        <View style={styles.details}>
+          <View style={styles.detailItem}>
+            <Icon name="wind" type="font-awesome-5" size={32} />
+            <Text style={styles.detailText}>
+              {weatherData.wind_speedy} km/h
+            </Text>
+          </View>
+          <View style={styles.detailItem}>
+            <Icon name="cloud-rain" type="font-awesome-5" size={32} />
+            <Text style={styles.detailText}>
+              {weatherData.humidity}% umidade
+            </Text>
+          </View>
+          <View style={styles.detailItem}>
+            <Icon name="cloud-showers-heavy" type="font-awesome-5" size={32} />
+            <Text style={styles.detailText}>
+              {weatherData.rain} mm de chuva
+            </Text>
+          </View>
+        </View>
+        <View style={styles.forecastContainer}>
+          <FlatList
+            data={weatherData.forecast.slice(0, 5)}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item }) => (
+              <View style={styles.forecastItem}>
+                <Text style={styles.forecastDate}>
+                  {moment(item.date, 'DD/MM').format('ddd')}
+                </Text>
+                <Icon
+                  name={getIconName(item.condition)} // Use getIconName para obter o nome do ícone
+                  type="ionicon"
+                  size={32}
+                  color="#000"
+                />
+                <Text style={styles.forecastTemp}>
+                  {item.max}°C / {item.min}°C
+                </Text>
+              </View>
+            )}
+            keyExtractor={(item) => item.date}
+          />
         </View>
       </View>
-      <View style={styles.footer}>
-        <FlatList
-          data={weatherData.forecast.slice(0, 5)}
-          horizontal
-          renderItem={({ item }) => (
-            <Card containerStyle={styles.forecastCard}>
-              <Text style={styles.forecastDate}>
-                {formatDate(item.date)}
-              </Text>
-              <Icon
-                name={item.condition_icon}
-                type="font-awesome-5"
-                size={30}
-                color="#000"
-              />
-              <Text style={styles.forecastTemp}>{item.temp}°C</Text>
-            </Card>
-          )}
-          keyExtractor={(item) => item.date.toString()}
-        />
-      </View>
-    </View>
+    </ScrollView>
   );
 };
 
+// Função para obter o nome do ícone do Ionicons
+const getIconName = (condition) => {
+  switch (condition) {
+    case 'clear-day':
+      return 'sunny-outline';
+    case 'clear-night':
+      return 'moon-outline';
+    case 'rain':
+      return 'rainy-outline';
+    case 'snow':
+      return 'snow-outline';
+    case 'sleet':
+      return 'cloudy-night'; // Use um ícone genérico para sleet
+    case 'wind':
+      return 'wind-outline';
+    case 'fog':
+      return 'fog-outline';
+    case 'cloudy':
+      return 'cloudy-outline';
+    case 'partly-cloudy-day':
+      return 'partly-sunny-outline';
+    case 'partly-cloudy-night':
+      return 'cloudy-night';
+    default:
+      return 'cloud-outline'; // Use um ícone genérico para condições desconhecidas
+  }
+};
+
 const styles = StyleSheet.create({
+  contentContainer: {
+    flexGrow: 1,
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    padding: 20,
   },
   header: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#007bff',
+    padding: 20, // Adicione padding para o header
   },
   headerText: {
     color: '#fff',
     fontSize: 24,
     fontWeight: 'bold',
+    textAlign: 'center', // Centraliza o texto
   },
   body: {
     flex: 2,
@@ -121,31 +178,66 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
-  infoItem: {
-    flex: 1,
+  tempContainer: {
+    alignItems: 'center',
+    flexDirection: 'column', // Alinhe os elementos na vertical
+  },
+  tempTextContainer: {
     alignItems: 'center',
   },
-  infoText: {
-    fontSize: 18,
+  tempText: {
+    fontSize: 48,
+    fontWeight: 'bold',
+    marginBottom: 5, // Adicione margem inferior para separar a temperatura da descrição
   },
-  footer: {
+  descriptionText: {
+    fontSize: 24,
+  },
+  iconContainer: {
+    alignItems: 'center',
+  },
+  icon: {
+    width: 150,
+    height: 150,
+  },
+  details: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    padding: 20,
+  },
+  detailItem: {
+    alignItems: 'center',
+    width: '45%',
+    marginBottom: 15,
+  },
+  detailText: {
+    fontSize: 18,
+    marginTop: 5,
+  },
+  forecastContainer: {
     flex: 1,
     padding: 20,
   },
-  forecastCard: {
-    width: 100,
-    height: 150,
-    margin: 10,
-    justifyContent: 'center',
+  forecastItem: {
     alignItems: 'center',
+    width: 80,
+    marginRight: 20,
   },
   forecastDate: {
-    fontSize: 12,
-    marginBottom: 10,
-  },
-  forecastTemp: {
     fontSize: 16,
     fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  forecastIcon: {
+    width: 40,
+    height: 40,
+    marginBottom: 5,
+  },
+  forecastTemp: {
+    fontSize: 14,
   },
 });
 
