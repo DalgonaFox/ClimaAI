@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  ScrollView,
-  FlatList,
-} from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, FlatList } from 'react-native';
 import { Icon } from 'react-native-elements';
 import axios from 'axios';
-import moment from 'moment'; // Importe a biblioteca moment.js
-import 'moment/locale/pt-br'; // Importe o locale pt-br para o moment
+import moment from 'moment';
+import 'moment/locale/pt-br';
 
-const API_KEY = '08085d25'; // Substitua pela sua chave API
+const API_KEY = '08085d25';
 
 const App = () => {
   const [weatherData, setWeatherData] = useState(null);
@@ -36,13 +29,13 @@ const App = () => {
   const getCurrentDateTime = () => {
     const now = new Date();
     moment.locale('pt-br'); // Define o locale como pt-br
-    return moment(now).format('LLLL').charAt(0).toUpperCase() + moment(now).format('LLLL').slice(1); // Formate a data como você quiser e converta para maiúsculas
+    return moment(now).format('LLLL').charAt(0).toUpperCase() + moment(now).format('LLLL').slice(1);
   };
 
   // Função para corrigir a hora da API
   const fixHour = (hour) => {
     const [hours, minutes, seconds] = hour.split(':').map(Number);
-    const correctedHours = (hours - 3 + 24) % 24; // Subtrai 3 horas e ajusta para o intervalo de 0 a 23
+    const correctedHours = (hours - 3 + 24) % 24;
     return `${correctedHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
@@ -59,7 +52,7 @@ const App = () => {
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerText}>
-            {getCurrentDateTime()} {/* Use getCurrentDateTime() para exibir a data e hora atuais */}
+            {getCurrentDateTime()}
           </Text>
           <Text style={styles.headerText}>
             {weatherData.city_name}
@@ -102,7 +95,7 @@ const App = () => {
                   {moment(item.date, 'DD/MM').format('ddd')}
                 </Text>
                 <Icon
-                  name={getIconName(item.condition)} // Use getIconName para obter o nome do ícone
+                  name={getIconName(item.condition)}
                   type="ionicon"
                   size={32}
                   color="#000"
@@ -120,7 +113,6 @@ const App = () => {
   );
 };
 
-// Função para obter o nome do ícone do Ionicons
 const getIconName = (condition) => {
   switch (condition) {
     case 'clear-day':
@@ -132,7 +124,7 @@ const getIconName = (condition) => {
     case 'snow':
       return 'snow-outline';
     case 'sleet':
-      return 'cloudy-night'; // Use um ícone genérico para sleet
+      return 'cloudy-night'; 
     case 'wind':
       return 'wind-outline';
     case 'fog':
@@ -144,7 +136,7 @@ const getIconName = (condition) => {
     case 'partly-cloudy-night':
       return 'cloudy-night';
     default:
-      return 'cloud-outline'; // Use um ícone genérico para condições desconhecidas
+      return 'cloud-outline';
   }
 };
 
@@ -163,13 +155,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#007bff',
-    padding: 20, // Adicione padding para o header
+    padding: 20,
   },
   headerText: {
     color: '#fff',
     fontSize: 24,
     fontWeight: 'bold',
-    textAlign: 'center', // Centraliza o texto
+    textAlign: 'center',
   },
   body: {
     flex: 2,
@@ -180,7 +172,7 @@ const styles = StyleSheet.create({
   },
   tempContainer: {
     alignItems: 'center',
-    flexDirection: 'column', // Alinhe os elementos na vertical
+    flexDirection: 'column',
   },
   tempTextContainer: {
     alignItems: 'center',
@@ -188,7 +180,7 @@ const styles = StyleSheet.create({
   tempText: {
     fontSize: 48,
     fontWeight: 'bold',
-    marginBottom: 5, // Adicione margem inferior para separar a temperatura da descrição
+    marginBottom: 5,
   },
   descriptionText: {
     fontSize: 24,
