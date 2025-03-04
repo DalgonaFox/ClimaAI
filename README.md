@@ -2,7 +2,6 @@
 
 ## Sobre o Projeto
 É uma aplicação web que retorna informações sobre o clima para os próximos dias dependendo de sua localização.
-Você pode acessar o projeto no ar [aqui!](https://climaai.onrender.com/)
 
 > Este projeto foi criado como um exercício durante as aulas no curso Técnico em Desenvolvimento de Sistemas no SENAI!
 
