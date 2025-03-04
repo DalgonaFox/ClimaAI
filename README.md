@@ -1,10 +1,10 @@
 # ClimaAIReactApp
 
 ## Sobre o Projeto
-É uma aplicação web que em progresso que retorna informações sobre o clima para os próximos dias dependendo de sua localização.
+É uma aplicação web que retorna informações sobre o clima para os próximos dias dependendo de sua localização.
 Você pode acessar o projeto no ar [aqui!](https://climaai.onrender.com/)
 
-> Este projeto foi criado como um exercício durante as aulas no curso Técnico em Desenvolvimento de Sistemas no SENAI, mas que não tinha sido finalizado. Posteriormente eu o aprimorei e adicionei as funcionalidades que faltavam!
+> Este projeto foi criado como um exercício durante as aulas no curso Técnico em Desenvolvimento de Sistemas no SENAI!
 
 ## Funcionalidades
 - Geração de previsão do tempo conforme localização.
@@ -24,15 +24,12 @@ Use os seguintes comandos no Git Bash, já dentro da pasta onde você deseja clo
 ### Instalando Dependências
 Abra seu editor de código e abra a pasta onde o projeto está.
 - Use o comando a seguir no seu terminal (Pode ser tanto pelo editor de código como pelo prompt de comando):
-> npm install react react-native @google/generative-ai @react-native-community/slider @expo/vector-icons react-native-markdown-display
+> npm install react react-native expo-splash-screen react-native-elements axios moment
 
 ### Rodando o Projeto
 No terminal, use o comando a seguir (certifique-se de estar dentro da pasta do projeto):
 > npx expo start
 - Abra o app Expo Go em seu celular e escaneie o QR Code que aparecerá em seu terminal. ou, se preferir, abra o app pelo link 'localhost:8081'.
-
-## Como Usar
-Insira o destino desejado de viagem e a quantidade de dias! Teste o quanto quiser, a API do Gemini é ilimitada (por enquanto).
 
 ## Tecnologias
 O projeto foi desenvolvido com as seguintes tecnologias:
@@ -40,7 +37,7 @@ O projeto foi desenvolvido com as seguintes tecnologias:
 - HG Brasil API.
 
 ## Contato
-Caso tenha dúvidas ou sugestões, entre em contato:
+Caso tenha dúvidas, sugestões ou precise de ajuda para testar a minha aplicação, entre em contato:
 - Email: mila.olisantos@gmail.com
 - GitHub: [DalgonaFox](https://github.com/DalgonaFox)
 - LinkedIn: [Milena Oliveira Santos](https://www.linkedin.com/in/milena-oliveira-santos-432611278/).

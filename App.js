@@ -1,3 +1,5 @@
+
+import * as SplashScreen from 'expo-splash-screen';
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, FlatList } from 'react-native';
 import { Icon } from 'react-native-elements';
@@ -5,9 +7,24 @@ import axios from 'axios';
 import moment from 'moment';
 import 'moment/locale/pt-br';
 
+SplashScreen.preventAutoHideAsync();
+
 const API_KEY = '08085d25';
 
 const App = () => {
+  
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        await SplashScreen.hideAsync();
+      } catch (erro) {
+        console.error(erro);
+      } 
+    }
+    prepare();
+  }, []);
+
   const [weatherData, setWeatherData] = useState(null);
 
   useEffect(() => {
@@ -25,14 +42,12 @@ const App = () => {
     }
   };
 
-  // Função para obter a data e hora atuais em português
   const getCurrentDateTime = () => {
     const now = new Date();
-    moment.locale('pt-br'); // Define o locale como pt-br
+    moment.locale('pt-br');
     return moment(now).format('LLLL').charAt(0).toUpperCase() + moment(now).format('LLLL').slice(1);
   };
 
-  // Função para corrigir a hora da API
   const fixHour = (hour) => {
     const [hours, minutes, seconds] = hour.split(':').map(Number);
     const correctedHours = (hours - 3 + 24) % 24;
