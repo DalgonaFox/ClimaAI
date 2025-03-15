@@ -1,4 +1,4 @@
-# ClimaAIReactApp
+# ClimaAI
 
 ## Sobre o Projeto
 É uma aplicação web que retorna informações sobre o clima para os próximos dias dependendo de sua localização.
