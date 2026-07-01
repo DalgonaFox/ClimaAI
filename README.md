@@ -1,6 +1,11 @@
-# ClimaAI
+<h1 align="center"> ClimaAI </h1>
 
-## Sobre o Projeto
+<p align="center">
+  <img src="https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React Native" />
+  <img src="https://img.shields.io/badge/Expo-000000?style=for-the-badge&logo=expo&logoColor=white" alt="Expo" />
+  <img src="https://img.shields.io/badge/Gemini_API-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white" alt="Gemini API" />
+</p>
+
 É uma aplicação web que retorna informações sobre o clima para os próximos dias dependendo de sua localização.
 
 > Este projeto foi criado como um exercício durante as aulas no curso Técnico em Desenvolvimento de Sistemas no SENAI!
