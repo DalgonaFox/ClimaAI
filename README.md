@@ -35,11 +35,6 @@ No terminal, use o comando a seguir (certifique-se de estar dentro da pasta do p
 > npx expo start
 - Abra o app Expo Go em seu celular e escaneie o QR Code que aparecerá em seu terminal. ou, se preferir, abra o app pelo link 'localhost:8081'.
 
-## Tecnologias
-O projeto foi desenvolvido com as seguintes tecnologias:
-- React Native/Framework Expo;
-- HG Brasil API.
-
 ## Contato
 Caso tenha dúvidas, sugestões ou precise de ajuda para testar a minha aplicação, entre em contato:
 - Email: mila.olisantos@gmail.com
